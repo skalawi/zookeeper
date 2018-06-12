@@ -3,6 +3,7 @@ import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 
+import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -59,6 +60,13 @@ class NodeChildrenWatcher implements Watcher {
             }
         } catch (KeeperException | InterruptedException e) {
             System.out.println("Error while counting children" + e);
+        }
+        try {
+            zooKeeper.setData("/children", String.valueOf(count).getBytes(), -1);
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         System.out.println("Children count: " + count);
     }
