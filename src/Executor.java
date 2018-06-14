@@ -37,20 +37,10 @@ public class Executor {
     void printNodeFamily() {
         try {
             if (zooKeeper.exists(nodeName, false) != null) {
-                Queue<String> queue = new LinkedList<>();
-                queue.add(nodeName);
-                System.out.println(nodeName);
-                while (!queue.isEmpty()) {
-                    String node = queue.poll();
-                    List<String> children = zooKeeper.getChildren(node, false);
-                    if (children.size() > 0) {
-                        System.out.println("Children of " + node + ":");
-                        for (String child : children) {
-                            System.out.println(child);
-                            queue.add(node + "/" + child);
-                        }
-                    }
-                }
+                int indent = 0;
+                StringBuilder sb = new StringBuilder();
+                printNodeTree(nodeName, indent, sb, zooKeeper, nodeName);
+                System.out.print(sb.toString());
             } else {
                 System.out.println("Node doesn't exist");
             }
@@ -58,6 +48,35 @@ public class Executor {
         } catch (KeeperException | InterruptedException e) {
             System.out.println("Error while printing node family " + e);
         }
+    }
+
+    private static void printNodeTree(String node, int indent,
+                                           StringBuilder sb, ZooKeeper zooKeeper, String totalPath) {
+        sb.append(getIndentString(indent));
+        sb.append("+--");
+        sb.append(node);
+        sb.append("\n");
+        try {
+            List<String> children = zooKeeper.getChildren(totalPath, false);
+            if(children.size()>0) {
+                for (String child : children) {
+                    printNodeTree(child, indent + 1, sb, zooKeeper, totalPath+"/"+child);
+                }
+            }
+        } catch (KeeperException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private static String getIndentString(int indent) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < indent; i++) {
+            sb.append("|  ");
+        }
+        return sb.toString();
     }
 
     void stop() {
