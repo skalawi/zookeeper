@@ -6,8 +6,6 @@ import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 
-import java.io.IOException;
-
 public class ChildrenDataMonitor implements Watcher {
     private ZooKeeper zooKeeper;
     private String nodeName;

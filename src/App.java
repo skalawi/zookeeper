@@ -16,7 +16,11 @@ public class App {
         String exec;
         String line;
 
-        if (args.length != 2) {
+        if (args.length == 4){
+            port = Integer.parseInt(args[0]);
+            exec = args[1] + " " + args[2] + " " + args[3];
+        }
+        else if (args.length != 2) {
             port = Integer.parseInt(reader.nextLine().trim());
             exec = reader.nextLine();
         } else {

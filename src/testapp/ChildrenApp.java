@@ -1,7 +1,6 @@
 package testapp;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class ChildrenApp {
     private static final String HOST = "127.0.0.1";
